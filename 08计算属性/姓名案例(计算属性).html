@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        姓:<input type="text" name="" v-model="onename">
+        名:<input type="text" name="" v-model="twoname">
+        名:<input type="text" name="" v-model="x"><!-- 这里x不依赖get改也不会触发get -->
+        姓名:<span>{{fullName}}</span>
+    </div>
+    <script>
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                onename: '张',
+                twoname: '三',
+                x:'666'
+            },
+            /* 计算属性就是把已经写完的属性,再计算加工成全新的属性 */
+            computed: {
+                fullName: {
+                    //get作用:当有人读取fullname时,get就会被调用,且返回值是fullname的值
+                    //get初次读取fullname时被调用,所依赖的数据发生变化时get重新调用
+                    get() {
+                        //这里this指向vm,所以我们可以通过this拿到vm里面的值
+                        console.log('get被调用');
+                        return this.onename + this.twoname
+                    },
+                    //set什么时候调用:当fullname被修改时
+                    set(value){
+                        console.log('set被调用了',value);
+                        //思路,做一个数组,数组第一个值为onename,第二个为twoname,value中间用'-'分割(split)开来
+                        const arr = value.split('-')
+                        this.onename=arr[0]
+                        this.twoname=arr[1]
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

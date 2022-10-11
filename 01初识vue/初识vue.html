@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入vue -->
+    <script type="text/javascript" src="../js/vue.js">
+    </script>
+</head>
+
+<body>
+    <!-- 准备好一个容器div -->
+    <!-- 容器与Vue实例一一对应 -->
+    <!-- {{}}里面可以写js表达式和代码
+    1.表达式 一个表达式可以生成一个值,可以放在需要的位置
+        1. a
+        2. a+b
+        3. demo(1)
+        4. x===y ?'a':'b'三元表达式
+    2.js代码(语句)
+        1. if(){}
+        2. for(){}-->
+    <div id="root">
+        <h1>Hello,{{name.toUpperCase()}},{{address}} ,{{1+1}},{{Date.now()}}</h1>
+        
+    </div>
+
+    <script>
+        Vue.config.productionTip = false; //阻止vue在启动时产生提示
+        //创建Vue实例
+        new Vue({
+            el:'#root',//element元素,让指定当前Vue实例为容器服务,值通常为css选择器字符串
+            //el与data叫配值对象
+            //el:document.getElementById('root'),等同上方
+            //把容器中变化的部分放在实例中,数据变化时,用某种办法改这里的容器存在实例里的部分
+            //某种方法:写对象
+
+            //解析
+            data:{
+                //data中用于存储数据,数据供el所指定的容器去使用,值我们暂时使用一个对象
+                name:'makima',
+                address:'杭州'
+            }
+
+        })
+        
+    </script>
+</body>
+
+</html>

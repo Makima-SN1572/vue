@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>今天天气很{{info}}</h1>
+        <button @click="change">切换天气</button>
+
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                isHot: true
+            },
+            computed: {
+                info() {
+                    return this.isHot ? '炎热' : '凉快'
+                }
+            },
+            methods: {
+
+                change() {
+                    this.isHot = !this.isHot
+                }
+            },
+            /* watch: {
+                //监视对象
+                isHot: {
+                    immediate:true,//初始化时让handler调用一下
+                    //handler时候调用,isHot发生变化时
+                     handler(newValue, oldValue) {
+                        console.log('isHot被修改了', newValue, oldValue);
+                    }, 
+                },
+                info:{
+                    immediate:true,
+                    handler(newValue, oldValue) {
+                        console.log('info被修改了', newValue, oldValue);
+                    }
+                }
+            } */
+        })
+
+        //当你实例写完时,可以采用第二种方式监视
+        vm.$watch('isHot', {
+            immediate: true,//初始化时让handler调用一下
+            //handler什么时候调用,isHot发生变化时
+            handler(newValue, oldValue) {
+                console.log('isHot被修改了', newValue, oldValue);
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        * {
+            margin-top: 20px;
+        }
+
+        .demo1 {
+            height: 50px;
+            background-color: aqua;
+        }
+
+        #box1 {
+            padding: 5px;
+            background-color: skyblue;
+        }
+
+        #box2 {
+            padding: 5px;
+            background-color: yellow;
+        }
+        .list{
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+            overflow: auto;
+        }
+        li{
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 
+        Vue中的时间修饰符:
+        1.prevent:阻止默认事件
+        2.stop阻止时间冒泡
+        3.once事件只触发一次
+        4.capture 使用时间捕获模式
+        5.self 只有event.target是当前操作的元素是才触发事件
+        6.passive 事件的默认行为立即执行,无需等待事件回调执行完毕
+     -->
+    <div id="root">
+        <h2>现在是{{name}}时间</h2>
+        <!-- prevent:阻止默认事件 -->
+        <a href="http://www.bilibili.com" @click.prevent="showIn">点击跳转</a>
+        <!-- stop阻止时间冒泡 -->
+        <div class="demo1" @click="showIn">
+            <!-- <button @click.stop="showIn">点我提示信息</button> -->
+            <a href="http://www.bilibili.com" @click.prevent.stop="showIn">点我提示信息</a><!-- 修饰符可以连续写 -->
+        </div>
+        <!-- once事件只触发一次 -->
+        <button @click.once="showIn">点我提示信息</button>
+        <!-- capture 使用时间捕获模式 -->
+        <div id="box1" @click.capture="showMsg(1)">
+            div1
+            <div id="box2" @click="showMsg(2)">
+                div2
+            </div>
+        </div>
+        <!-- self 只有event.target是当前操作的元素是才触发事件 -->
+        <div class="demo1" @click.self="showIn">
+            <button @click="showIn">点我提示信息</button>
+        </div>
+        <!-- passive 事件的默认行为立即执行,无需等待事件回调执行完毕 -->
+        <ul @wheel.passive="demo" class="list">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+    <script>
+        new Vue({
+            el: '#root',
+            data: {
+                name: 'makima'
+            },
+            methods: {
+                showIn(e) {
+                    /* e.preventDefault() */
+                    /* e.stopPropagation() */
+                    alert('kounijiwa')
+                    /* console.log(e.target) */
+                },
+                showMsg(msg) {
+
+                    console.log(msg);
+                },
+                demo(){
+                    for (let i = 0; i < 1000; i++) {
+                        console.log('#');
+                        
+                    }
+                    console.log('累坏了')
+                }
+            }
+
+        })
+    </script>
+</body>
+
+</html>

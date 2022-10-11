@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div class="root">
+        <!-- modle -->
+        <h1>学校名称{{name}}</h1>
+        <h1>学校地址{{address}}</h1>
+        <p>{{1+1}}</p>
+        <p>{{$options}}</p><!-- Vue原型上的所有属性 -->
+        <p>{{$emit}}</p><!-- Vue原型上的所有属性都可以使用 -->
+    </div>
+    <script>
+        //viewmodle
+        const vm = new Vue({
+            el: '.root',
+            data: {
+                //view
+                name: '北大',
+                address: '北京',
+                a: 1
+            }
+        })
+        console.log(vm);
+    </script>
+</body>
+
+</html>

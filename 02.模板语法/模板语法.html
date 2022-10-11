@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>差值语法</h1>
+        <h3>你好{{name}}</h3>
+        <hr>
+        <h1>指令语法 v-...</h1>
+        <!-- v-bind: =>可以被简写为: 此时url被当成了表达式,然后执行 -->
+        <a v-bind:href="school.url">点击去{{school.name}}网站1</a>
+        <a :href="school.url">点击去网站2</a>
+    </div>
+    <script>
+        new Vue({
+            el: '#root',
+            data: {
+                name: 'makima',
+                school: {
+                    name: 'moko',
+                    url: 'http://www.bilibili.com'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

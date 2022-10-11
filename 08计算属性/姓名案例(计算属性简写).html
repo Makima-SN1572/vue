@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        姓:<input type="text" name="" v-model="onename">
+        名:<input type="text" name="" v-model="twoname">
+        姓名:<span>{{fullName}}</span>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                onename: '张',
+                twoname: '三'
+            },
+
+            computed: {
+                fullName(){
+                    //当你确定你的计算属性只读不写时可以简写,只用get不用set
+                    console.log('get被调用');
+                    return this.onename + this.twoname
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

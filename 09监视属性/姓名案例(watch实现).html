@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        姓:<input type="text" name="" v-model="onename">
+        名:<input type="text" name="" v-model="twoname">
+        姓名:<span>{{fullname}}</span>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                onename: '张',
+                twoname: '三',
+                fullname: '张-三'
+            },
+            watch: {
+                onename(newValue) {
+                    //watch可以用异步,所以当computed和watch都可以使用时,使用computed更方便,异步时用watch
+
+
+
+                    /* 很重要:::::
+                        所有被Vue管理的函数就一定要写普通函数,这样this才会指向vm或组件实例对象
+                        所有不被Vue管理的函数(定时器的回调函数,ajax的回调函数,Promise回调函数等),最好写箭头函数,这样this就会指向vm或组件实例对象 
+                        
+                        这里的目标就是让this指向vm或组件实例对象
+
+                        */
+                
+
+
+
+
+
+
+                    //这里的箭头函数,往上找,this是newValue的所以是vm的,一定要写箭头函数,否则就是指向window,
+                    setTimeout(()=>{
+                        this.fullname = newValue + '-' + this.twoname
+                    },1000)  
+                },
+                twoname(newValue) {
+                    this.fullname = this.onename + '-' + newValue
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

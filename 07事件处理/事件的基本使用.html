@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1>现在是{{name}}时间</h1>
+        <!-- <button v-on:click="showInfo">点我提示信息</button> -->
+        <button @click="showInfo">点我提示信息1(不传参)</button>
+        <button @click="showInfo2(66,$event)">点我提示信息2(传参)</button><!-- 传参 -->
+    </div>
+    <script>
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                name: '幻想'
+            }
+            ,
+            methods: {
+                showInfo(event) {
+                    console.log(event.target.innerText);
+                    console.log(this);//此处的this是vm,但如果这里用箭头函数指向就是window
+                    alert('你好')
+                },
+                showInfo2(number) {
+                    console.log(number);
+                    console.log(event.target.innerText);
+                    
+                    alert('你好2')
+                }
+            }
+
+        })
+    </script>
+</body>
+
+</html>
