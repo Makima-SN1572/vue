@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h2>人员列表</h2>
+        <input type="text" placeholder="请输入名字" v-model="keyword">
+        <ul>
+            <li v-for="(p,index) of filPersonList" :key="index">{{p.name}}-{{p.age}}-{{p.sex}}</li>
+        </ul>
+    </div>
+    <script>
+        //watch实现
+         new Vue({
+            el: '#root',
+            data: {
+                /* 收集用户输入 */
+                keyword: '',
+                personList: [
+                    { id: '001', name: '马冬梅', age: 18, sex: '女' },
+                    { id: '002', name: '周冬雨', age: 19, sex: '女' },
+                    { id: '003', name: '周杰伦', age: 22, sex: '男' },
+                    { id: '004', name: '温兆伦', age: 20, sex: '男' }
+                ],
+                filPersonList: []
+
+            },
+            /* 监视变化 */
+            watch: {
+                keyword:{
+                    immediate:true,
+            /* console.log('keyword被改了',val); */
+            /* 第一个this.personList是因为filter会根据你搜的数据生成一个新的数组,不会改变原数组,所以要让他改变data的personList,让页面发生改变(页面上的数据是data里的数据) ,但因为你不断过滤,所以你越搜索越少,所以我们就建立一个新的数组,让他等于data的数据,将第一个this.personList改成this.filPersonList,这样我们就可以通过搜索来不断获取数据,而且不会破坏data里的数据,但也有一个问题,就是因为你filPersonList是一个空数组,所以一开始页面上是不会有数据的(空字符串包含在data里,所以你什么都不输入,单打回车他就会读取),所以我们就用immediate:true,handler(val)让他直接再开始就被调用,这样filPersonList就会拿到data的数据*/
+            handler(val) {
+                this.filPersonList = this.personList.filter((p) => {
+                    return p.name.indexOf(val) !== -1
+                })
+            }
+        }
+                }
+
+        }) 
+    </script>
+</body>
+
+</html>

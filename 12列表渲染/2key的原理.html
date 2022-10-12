@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- index作为key过程:根据初始数据生成虚拟DOM,再将虚拟DOM转成真实DOM,key值分别为0,1,2,当我们加入一个新数据,根据新数据生成虚拟DOM,但add的key值为0,导致所有key往下走,然后生成0,1,2,3的key值,input直接复用原来的key值得真实DOM,再生成一个新的input给key=3的,导致最后input你输入的值错了一个位置
+    总之问题就是index=key时key的值重置了
+    用key=id就不会,直接一个人一个ID,不存在错位,之前谁的信息,就继续复用,老刘就是新id=4,直接创建新的input给他
+    -->
+    <div id="root">
+        <!-- 遍历数组 -->
+        <h2>人员列表</h2>
+        <button @click.once="add">添加一个老刘</button>
+        <ul>
+            <!-- :key=""是标识,不能重复 ,key=index是特殊的,写他只在vue中被用,-->
+            <li v-for="(p,index) of personList" :key="p.id">{{p.name}}-{{p.age}}
+            <input type="text">
+            </li>
+        </ul>
+    </div>
+    <script>
+        new Vue({
+            el: '#root',
+            data: {
+                personList: [
+                    { id: '001', name: '张三', age: 18 },
+                    { id: '002', name: '李四', age: 19 },
+                    { id: '003', name: '王五', age: 20 }
+                ],
+            },
+            methods: {
+                add(){
+                    const p = {id:'004',name:'老刘',age:'40'}
+                    this.personList.unshift(p)
+                }
+            },
+
+        })
+    </script>
+</body>
+
+</html>

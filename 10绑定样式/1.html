@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+    <style>
+        .basic {
+            width: 300px;
+            height: 100px;
+            border: 2px solid wheat;
+        }
+
+        .happy {
+            background-color: aqua;
+        }
+
+        .sad {
+            background-color: bisque;
+        }
+
+        .normal {
+            background-color: tomato;
+        }
+
+        .atguigu1 {
+            background-color: yellow;
+        }
+
+        .atguigu2 {
+            font-size: larger;
+        }
+
+        .atguigu3 {
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <!-- :class Vue会介入解析class当成一个表达式，不加：只是单纯的样式 
+        绑定class样式，字符串写法，适用于：样式的类名不确定，需要动态决定
+        -->
+        <div class="basic" :class="mood" @click="changemood">{{name}}</div>
+        <br>
+
+        <!-- 绑定class样式，数组写法，适用于：要绑定的样式不确定，名字也不确定 -->
+        <div class="basic" :class="classArr">{{name}}</div>
+        
+        <!-- 只切换两个样式,随机组合或者都不用 ,-->
+        <!-- 绑定class样式，对象写法，适用于：要绑定的样式确定，名字也确定，要动态决定用不用 -->
+        <div class="basic" :class="classObj">{{name}}</div>
+
+        <!-- 绑定style样式对象与数组写法 -->
+        <div class="basic" :style="styleObj">{{name}}</div>
+        <div class="basic" :style="[styleObj,styleObj2]">{{name}}</div>
+    </div>
+
+    <script>
+        const vm= new Vue({
+            el:'#root',
+            data:{
+                name:'makima',
+                mood:'normal',
+                classArr:['atguigu1','atguigu2','atguigu3'],
+                classObj:{
+                    atguigu2:false,
+                    atguigu3:false
+                },
+                styleObj:{
+                    fontSize:'40px',
+                    color:'yellow',
+                    
+                },
+                styleObj2:{
+                    
+                    backgroundColor:'red'
+                },
+
+            },
+            methods: {
+                changemood(){
+                    const arr=['happy','sad','normal']
+                    //随机生成随机数
+                    const index = Math.floor(Math.random()*3)
+                    this.mood=arr[index]
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
