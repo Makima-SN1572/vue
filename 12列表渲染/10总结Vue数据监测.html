@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 数据劫持就是当你修改了Vue实例里的对象,马上就有set,get,这一步就叫劫持 -->
+    <div id="root">
+        <h1>学生信息</h1>
+
+        <button @click="student.age++">年龄+1岁</button>
+        <button @click="addSex">添加性别属性,默认值为男</button>
+        <button @click="student.sex='未知'">修改性别</button>
+        <button @click="addf">在列表首位添加一个朋友</button>
+        <button @click="addff">修改第一个朋友的名字改为:sukura</button>
+        <button @click="addh">添加一个爱好</button>
+        <button @click="addsh">修改第一个爱好为:运动</button>
+        <button @click="fillterl">过滤掉爱好中的抽烟</button>
+
+
+        <h2>姓名{{student.name}}</h2>
+        <h2>年龄{{student.age}}</h2>
+        <!-- v-if=""没有性别别出现 -->
+        <h2 v-if="student.sex">性别{{student.sex}}</h2>
+        <h2>爱好:</h2>
+        <ul>
+            <li v-for="(h,index) in student.hobby" :key="index">
+                {{h}}
+            </li>
+        </ul>
+        <h2>爱人</h2>
+        <ul>
+            <li v-for="(f,index) in student.frients" :key="index">
+                {{f.name}}--{{f.age}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                student:{
+                name: 'lev',
+                age: 18,
+                hobby: ['抽烟', '喝酒', '艹批'],
+                frients: [
+                    { name: 'makima', age: 22 },
+                    { name: 'moko', age: 23 }
+                ]
+            }},
+            methods: {
+                addSex(){
+                    /* 这里的this是因为数据代理Vue实例上直接有student属性 */
+                    Vue.set(this.student,'sex','男')
+                },
+                addf(){
+                    /* unshift是Vue给你调用的,就不怕没set... */
+                    this.student.frients.unshift({name:'youki',age:23})
+                },
+                addff(){
+                    /* 你别看这里有个数组,但this.student.frients[0]是个对象,你后面跟了个属性, 也就是说你在TMD修改对象的属性,就有set,你要是通过数组索引去修改您就完了*/
+                    this.student.frients[0].name = 'sukura'
+                },
+                addh(){
+                    this.student.hobby.push('学习')
+                },
+                addsh(){
+                    //this.student.hobby.splice(0,1,'读书')
+                    Vue.set(vm.student.hobby,0,'读书')
+                    //this.$set(vm.student.hobby,0,'读书')
+                },
+                fillterl(){
+                    /* 方法:你先过滤,再this.student.hobby =你过滤的数组去替换 */
+                    this.student.hobby = this.student.hobby.filter((h)=>{
+                        return h !=='抽烟'
+                    })
+                    
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

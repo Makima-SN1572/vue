@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h2>学校名称:{{name}}</h2>
+        <h2>学校地址:{{address}}</h2>
+        <!-- Vue.set只能给vm身上一个对象加数据,我们之前想之间在Vue实例对象的根数据data上直接加属性和值,但vue不允许,所以我们就在data里创建了一个对象school,在这个对象里面加leader属性 -->
+        <!-- <h2>校长是{{leader}}</h2> -->
+        <h2>校长是{{school.leader}}</h2>
+        <hr>
+        <h2>学生姓名{{student.name}}</h2>
+        <!-- 你在这里预留了一个data属性sex,准备后期需要的时候再加上去,此时sex的值为undefind,但vue不会对undefind报错,这时你在控制台上给sex加值vm._data.student.sex='男',发现只是你的数据里多了个值,但Vue并没有监测这个值,没有对sex生成对应的set,get,无法对页面里的性别那里显示性别(没有set), 
+        这时就可以用Vueapi:Vue.set()追加属性(target,key,val)里面一共三个东西
+        target:你要往谁身上加
+        key:你要往target身上加什么属性
+        val:你要给val属性身上加什么值
+        我们可以
+        Vue.set(vm._data.student,'sex','男')
+        vm.$set(vm._data.student,'sex','男')//这个Vue3不能用了
+        这个方法太烦了,改下
+        Vue.set(vm.student,'sex','男')
+        vm.$set(vm.student,'sex','男')//这个Vue3不能用了
+
+        -->
+        <button @click="addSex">点击添加性别,默认为男</button>
+        <!-- 这里的v-if判断有没有student.sex,有就会展示,没有就不展示 -->
+        <h2 v-if="student.sex">学生性别{{student.sex}}</h2>
+        <h2>学生年龄 真实年龄{{student.age.rage}} 对外年龄{{student.age.tage}}</h2>
+        <h2>爱人</h2>
+        <ul>
+            <li v-for="(f,index) in student.frients" :key="index">
+                {{f.name}}--{{f.age}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        /* Vue不论你对象有多少层,他都会递归到最里面,并且给每个对象都设置get,set,进行监测 */
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                school:{
+                    
+                },
+                name: '东大',
+                address: '东京',
+                student: {
+                    name: 'lev',
+                    age: {
+                        rage: 25,
+                        tage: 24,
+
+                    },
+                    frients: [
+                        { name: 'makima', age: 22 },
+                        { name: 'moko', age: 23 }
+                    ]
+                }
+            },
+            methods: {
+                addSex() {
+                    /* 这时就可以用Vueapi:Vue.set()追加属性(target,key,val)里面一共三个东西
+        target:你要往谁身上加
+        key:你要往target身上加什么属性
+        val:你要给val属性身上加什么值
+        我们可以
+        Vue.set(vm._data.student,'sex','男')
+        vm.$set(vm._data.student,'sex','男')//这个Vue3不能用了
+        这个方法太烦了,改下
+        Vue.set(vm.student,'sex','男')
+        vm.$set(vm.student,'sex','男')//这个Vue3不能用了 */
+
+                    Vue.set(this.student, 'sex', '男')
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

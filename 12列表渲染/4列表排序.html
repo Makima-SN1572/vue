@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h2>人员列表</h2>
+        <input type="text" placeholder="请输入名字" v-model="keyword">
+        <button @click="sortType = 2">年龄升序</button>
+        <button @click="sortType = 1">年龄降序</button>
+        <button @click="sortType = 0">原顺序</button>
+        <ul>
+            <li v-for="(p,index) of filPersonList" :key="p.id">{{p.name}}-{{p.age}}-{{p.sex}}</li>
+        </ul>
+    </div>
+    <script>
+        new Vue({
+            el: '#root',
+            data: {
+                keyword: '',
+                sortType: 0, //0=原顺序 1=降序 2=升序
+                personList: [
+                    { id: '001', name: '马冬梅', age: 19, sex: '女' },
+                    { id: '002', name: '周冬雨', age: 31, sex: '女' },
+                    { id: '003', name: '周杰伦', age: 22, sex: '男' },
+                    { id: '004', name: '温兆伦', age: 20, sex: '男' }
+                ],
+            },
+            computed: {
+                //过滤
+                filPersonList() {
+                    const  arr =  this.filPersonList = this.personList.filter((p) => {
+                        return p.name.indexOf(this.keyword) !== -1
+                    })
+                    //判断一下是否需要排序
+                    //这里是利用布尔值因为1,2为true,0为false所以相当于直接将原顺序排除不需要排序
+                    if (this.sortType) {
+                        //按照先过滤,再排序,所以这里用的是arr已经过滤完的数据
+                        arr.sort((a,b)=>{
+                            /* 降序后减前,升序前减后,这里拿到的是过滤后的personList里的age */
+                            return this.sortType === 2 ? a.age-b.age : b.age - a.age
+                        })
+                    }
+                    return arr
+                }
+            }
+        }) 
+    </script>
+</body>
+
+</html>
