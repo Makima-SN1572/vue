@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+    <script src="../js/dayjs.min.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h2>显示格式化后的时间</h2>
+        <!-- 计算属性实现 -->
+        <h3>现在是:{{fmtTime}}</h3>
+        <!-- methods实现  要用()调用 -->
+        <h3>现在是:{{getFmtTime()}}</h3>
+        <!-- 过滤器实现 ,你先写正常你要展示的time+空格+|+自己起的过滤器名字 -->
+        <!-- Vue拿着time传给timeFormater,timeFormater的返回值直接替换{{}}里面整个插值语法,最终实现解析 -->
+        <h3>现在是:{{time | timeFormater}}</h3>
+        <!-- 过滤器(传参)  只要年月日,因为有自己的格式化标准,所以要传参,传你要的 -->
+        <h3>现在是:{{time | timeFormater('YYYY年MM月DD日')}}</h3>
+        <!-- 多个过滤器串联 空格+|+自己起的过滤器名 
+        这里原理是time的时间戳先传到timeFormater返回值再传到mySlice然后解析-->
+        <h3>现在是:{{time | timeFormater('YYYY年MM月DD日') | mySlice}}</h3>
+        <!-- v-bind玩法 -->
+        <h3 :x="msg | mySlice">makima</h3>
+        
+    </div>
+    <!-- 为了体现全局过滤器我们继续创建一个容器和Vue实例 -->
+    <div id="root2">
+        <!-- 截取前四位,空格+|+自己起的过滤器名 -->
+        <h1>{{msg | mySlice}}</h1>
+    </div>
+    <script>
+        /* 配置全局过滤器 ,必须写在前面*/
+        Vue.filter('mySlice',function(value){
+            return value.slice(0,4)
+        })
+
+
+        new Vue({
+            el:'#root',
+            data:{
+                time:1665741483137, //时间戳
+                msg:'你好,makima'
+            },
+            computed:{
+                fmtTime(){
+                    /* 你这里dayjs你传不传time都会对时间戳进行转化,只不过一个是你指定的,一个是实时的 */
+                    return dayjs(this.time).format('YYYY年MM月DD日 HH:mm:ss')
+                }
+            },
+            methods: {
+                getFmtTime(){
+                    return dayjs(this.time).format('YYYY年MM月DD日 HH:mm:ss')
+                }
+            },
+            /* 局部过滤器,这个过滤器只能这个Vue实例能用 */
+            filters:{
+                /* 如果str有值,就用你自己定义的传参,没有就用他这里等于的 str='YYYY年MM月DD日 HH:mm:ss'*/
+                timeFormater(value,str='YYYY年MM月DD日 HH:mm:ss'){
+                    console.log('时间戳',value);
+                    return  dayjs(value).format(str)
+                },
+                mySlice(value){
+                    /* 截取前四位 */
+                    return value.slice(0,4)
+                },
+            }
+
+        })
+        new Vue({
+            el:'#root2',
+            data:{
+                msg:'hello,makima'
+            },
+        })
+    </script>
+</body>
+</html>

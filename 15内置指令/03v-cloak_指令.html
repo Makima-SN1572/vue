@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 选择所有带有v-cloak,给他一个display:none;当这个标签v-cloak存在时,就隐藏整个标签,等vue接手删除后页面出现,此时页面已经渲染完成 */
+    [v-cloak]{
+        display:none;
+    }
+    </style>
+    <!-- 假设这里用node来延迟五秒启动vue,这里就导致了容器和实例等vue引入5s后才能执行,如果你放在容器下面,就会容器先执行到页面上显示{{name}},五秒后vue介入,再实例运行,为了防止{{name}}出现 用v-cloak,vue接管的瞬间删除v-cloak-->
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <div v-cloak>{{name}}</div>
+    </div>
+    <script>
+        new Vue({
+            el:'#root',
+            data:{
+                name:'makima',
+            },
+        })
+    </script>
+</body>
+</html>
