@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 做个指令v-big,跟v-text类似,但把绑定的数值放大10倍 -->
+    <!-- 定义一个v-fbind指令,和v-bind功能类似,但可以让其所绑定的input元素默认获取焦点 -->
+    <div id="root">
+        <h2>当前的n值是:<span v-text="n"></span></h2>
+        <!-- v-big-numbe自定义指令多个单词用-连接不要大写 -->
+        <!-- <h2>放大10倍的n值是:<span v-big-number="n"></span></h2> -->
+        <h2>放大10倍的n值是:<span v-big="n"></span></h2>
+        <button @click="n++">点我n+1</button>
+        <hr>
+        <input type="text" v-fbind:value="n">
+    </div>
+    <!-- 全局指令 -->
+    <div id="root2">
+        <input type="text" v-fbind:value="n">
+    </div>
+</body>
+<script>
+    /* 全局配置,这里就可以直接在全局,配置后下方就不需要重新局部配置 */
+    Vue.directive('fbind', {
+        bind(element, binding) {
+            element.value = binding.value
+            console.log('fbind-bind', this);//这里所有的this都是window
+        },//调用时间:指令与元素成功绑定时(一开始就调用)
+        inserted(element, binding) {
+            console.log('fbind-inserted', this);
+            element.focus()
+        },//调用时间:指令所在元素被插入页面时
+        update(element, binding) {
+            console.log('fbind-update', this);
+            element.value = binding.value
+        }
+    })//此时v-fbind自定义指令全局可用
+    new Vue({
+        el: '#root',
+        data: {
+            n: 1
+        },
+        /* 定义一个指令big */
+        directives: {
+            /* big(element,binding) 两个参数分别是: element=真实DOM元素span标签,binding=你要的value值 你n等于的1 */
+            //big函数何时被调用:1.指令与元素成功绑定时(一开始就调用)  2.指令所在的模板被重新解析时,(就算你改个name和n无关，他也被调用)
+            /* 自定义名多个单词写在''里面
+            'big-number'(element, binding) {
+               
+                element.innerText = binding.value * 10
+
+            }, */
+            big(element, binding) {
+                /* 这里就是把下方第二种写法,只写了bind, update,所以这俩的指令基本一致*/
+                element.innerText = binding.value * 10
+
+            },
+            /*fbind(element,binding){
+                element.value = binding.value
+                /* binding指令与元素成功绑定时(一开始就调用),这里就坑了获取焦点,因为此时并没有出现在页面上,先存在内存里了,你页面都没有东西你怎么获取焦点,      指令所在的模板被重新解析时,(就算你改个name和n无关，他也被调用),你触发后续的修改,这里此时input已经出现在页面上,所以你就可以触发获取焦点*/
+            /* element.focus() *//*
+        }*/
+            /* 第二种自定义指令方式 */
+            /* fbind: {
+                bind(element, binding) {
+                    element.value = binding.value
+                    console.log('fbind-bind', this);//这里所有的this都是window
+                },//调用时间:指令与元素成功绑定时(一开始就调用)
+                inserted(element, binding) {
+                    console.log('fbind-inserted', this);
+                    element.focus()
+                },//调用时间:指令所在元素被插入页面时
+                update(element, binding) {
+                    console.log('fbind-update', this);
+                    element.value = binding.value
+                }//调用时间:指令所在元素被重新解析时
+            } */
+        }
+    })
+</script>
+
+</html>

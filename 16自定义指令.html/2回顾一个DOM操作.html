@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    .demo{
+        background-color: aquamarine;
+    }
+    </style>
+</head>
+
+<body>
+    <button id="btn">点我获取一个带焦点的输入框</button>
+    <script>
+        /* 创建变量btn获取btn的id */
+        const btn = document.getElementById('btn')
+        btn.onclick = () => {
+            /* 创建变量input,使其点击事件能创建一个inupt标签 */
+            const input = document.createElement('input')
+
+
+            /* 能写在input框出现在页面上之前的代码(vue实例里的bind) */
+            input.className='demo'//加个class属性
+            input.value=-99//赋值
+            input.onclick=()=>{console.log(1);}//再来个点击事件
+
+
+            /* 父元素未出现 */
+            console.log(input.parentElement);
+            
+            /* 让input框呈现在页面上 */
+            document.body.appendChild(input)
+            /* 获取焦点 ,focus要放在输入框出现在页面之后 (vue实例里的inserted)*/
+            /* 不能写在之前,能写在input框出现在页面上之后的代码 */
+            input.focus()
+            input.parentElement.style.backgroundColor = 'skyblue'//给input的父元素加样式,这里是因为在出现在页面后,父元素才出现,才能获取父元素,此时才能给父元素加样式
+            console.log(input.parentElement);//父元素出现
+        }
+    </script>
+</body>
+
+</html>

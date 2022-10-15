@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root" :x="n">
+        <h2>现在的N值是{{n}}</h2>
+        <button @click="add">点我n++</button>
+        <button @click="bye">点我VUE实例启动销毁</button>
+    </div>
+    <script>
+        new Vue({
+            el: '#root',
+            //template会替换掉整个id=root的div,换成下面你自己写的,div里面的:x="n"就不会生效
+            /* template: `<div><h2>现在的N值是{{n}}</h2>
+        <button @click="add">点我n++</button></div>` */
+            
+
+            data: {
+                n: 1
+            },
+            methods: {
+                add() {
+                    console.log('add');
+                    this.n++
+                },
+                bye(){
+                    console.log('调用毁灭模式');
+                    this.$destroy()
+                }
+            },
+            watch:{
+                n(){
+                    console.log('监视器发现n变了');
+                }
+            },
+            /* 生命周期里的this都是指向vue */
+
+
+            //初始化(生命周期,时间,但数据代理还未开始)
+            //第一个生命周期是指数据监测,数据代理创建之间
+            /* 第一个生命周期beforeCreate,此时无法通过vm访问到data中的数据,methods中的方法 */
+            beforeCreate() {
+                console.log('beforeCreate');
+                console.log(this);
+                //debugger;//断点,我们直接打断代码执行,观察步骤
+            },
+
+            //初始化(数据监测,数据代理完成)
+            /* 第二个生命周期created,此时可以通过vm访问到data中的数据和methods中的方法 */
+            created() {
+                console.log('beforeCreate');
+                console.log(this);
+                //debugger
+            },
+            //在created之后Vue会判断你有没有el:'#root',没有就判断有没有vm.$mount(el),(都没有就不进行下去了,这里直走了两个生命周期)然后继续判断有没有template(不是template标签),有的话就编译一个模板到render函数里面,没有的话就会把整个el的html作为template(就是di="root"的整个div内容)
+
+            //此阶段Vue开始解析模板,生成虚拟DOM(内存中),页面还不能显示解析好的内容,然后进入第三个生命周期
+
+
+            //第三个生命周期beforeMount,此时1.页面呈现的是未经Vue编译的DOM结构  2.所有对DOM的操作最终都不生效
+            beforeMount() {
+                console.log('beforeMount');
+                console.log(this);
+                //你在这个生命周期里面操作dom最终都不生效,只会以一瞬间显示后被虚拟dom代替
+                //document.querySelector('h2').innerText='hahaha'//瞬间就没有了
+                //debugger
+            },
+
+            //beforeMount之后  vue创建 vm.$el和替换el,将内存中的虚拟DOM转为真实DOM插入页面,进入第四生命周期
+
+            //第四个生命周期mounted,此时:1.页面呈现的是经过Vue编译的DOM   2.对DOM的操作均有效(尽可能避免),至此初始化完成,一般在此进行开启定时器,发送网络请求,订阅消息,绑定自定义事件,等初始化操作
+            mounted() {
+                console.log('beforeMount');
+                //document.querySelector('h2').innerText='hahaha',这里就可以生效,但不推荐
+                console.log(this);
+                console.log(this.$el instanceof HTMLElement);//这里就知道他是真实dom
+                //debugger
+            },
+
+            //以上挂载流程结束,更新流程开始
+
+            //当你的data数据改变,进入第五生命周期beforeUpdate
+
+            //第五生命周期beforeUpdate,此时:数据是新的,但页面是旧的,就是说你的页面上为何数据保持同步
+            beforeUpdate() {
+                console.log('beforeUpdate');
+                console.log(this.n);//你这里断点,你的页面上为何数据保持同步,所以控制台是n=2,而页面还是n=1
+                //debugger
+            },
+
+            //beforeUpdate之后虚拟DOM就会重新渲染,进行新旧虚拟DOM对比（根据新数据，生成新虚拟DOM，随后于旧的虚拟DOM解析比较，最终完成页面更新，即：完成了Model==>>View的更新）,然后进入第六生命周期
+
+
+            //第六生命周期updated,此时数据是最新的,页面也是最新的,也就是说页面和数据保持同步
+            updated() {
+                console.log('updated');
+                console.log(this.n);
+                //debugger
+            },
+
+            //以上更新流程结束,进入销毁流程
+
+            //当vm.$destroy()被调用,就会进入第七生命周期
+
+            //第七生命周期beforeDestroy,此时vm中所有的:data,methods,指令等等,都处于可用状态,马上要执行销毁过程,一半在此阶段:关闭定时器,取消订阅消息,解绑自定义事件等收尾操作,此时都还没被销毁
+
+            //这里你对数据的修改都不会被触发更新流程
+            beforeDestroy() {
+                console.log('beforeUpdate');
+                console.log(this.n);
+                console.log(this);
+                this.add()
+                this.n=99//这里你对数据的修改都不会被触发更新流程
+                //debugger
+            },
+
+            
+            //beforeDestroy之后移出所有监视,子组件,事件监听器,然后进入第八个生命周期
+
+            destroyed() {
+                console.log('destroyed');
+                console.log(this);
+            },
+        })
+    </script>
+</body>
+
+</html>
