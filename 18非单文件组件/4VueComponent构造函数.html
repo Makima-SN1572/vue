@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        //定义一个school组件
+        const school = Vue.extend({
+            name: 'school',
+            template: `
+            <div>
+                <h2>学校名称{{schoolName}}</h2>
+                <h2>学校地址{{address}}</h2>
+                <button @click="showName">点我提示学校名{{schoolName}}</button>
+            </div>
+            `,
+            data() {
+                return {
+                    schoolName: '东大',
+                    address: '东京'
+                }
+            },
+            methods: {
+                showName() {
+                    alert(this.schoolName)//这里this指向VueComponent实例对象(简称vc),不是vm实例,他俩一模一样,但不是同一个
+                    console.log(this);
+                }
+            },
+
+        })
+        const test = Vue.extend({
+            template: `
+            <span>maki</span>
+            `
+        })
+        const hello = Vue.extend({
+            name: 'hello',
+            template: `
+            <div>
+                <h2>{{msg}}</h2>
+                <test></test>    
+            </div>
+            `,
+            data() {
+                return {
+                    msg: '你好makima'
+                }
+            },
+            components: {
+                test
+            }
+        })
+        //看一下组件是什么东西,发现是一个构造函数,名字叫VueComponent,是Vue.extend调用的,你要是简写那出来的就是一个对象,你用一次组件就调用一次,而且你每一次调用Vue.extend,返回的都是一个全选的VueComponent(Vue组件)
+
+        //这里我们调用了两次VueComponent,这里两次调用是生成了两个全新的VueComponent给你,只不过是一样的样子
+        console.log('#', school);
+        console.log('@', hello);
+        console.log(hello === school);//为false 这就证明他俩VueComponent不是同一个
+
+        
+        //vc与vm不同在于vm可有根元素el,vc不能有,而且vc的data必须写成函数不能是对象
+        const vm = new Vue({
+            //引用组件
+            template: `<div>
+            <school></school>
+            <hello></hello>    
+            </div>`,
+            el: '#root',
+            //注册组件
+            components: {
+                school,
+                hello
+            },
+
+        })
+    </script>
+</body>
+
+</html>

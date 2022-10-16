@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root"> </div>
+    <script>
+        //先定义组件,再进行嵌套,否则按照代码顺序就是未定义
+        const hello = {
+            template: `
+            <h1>{{msg}}</h1>`,
+            data() {
+                return {
+                    msg: '你好moko'
+                }
+            }
+        }
+        const student = {
+            name: 'student',
+            template: `
+            <div>
+                <h2>学生姓名{{studentName}}</h2>
+                <h2>学生年龄{{age}}</h2>
+            </div>
+            `,
+            data() {
+                return {
+                    studentName: 'moko',
+                    age: 18
+                }
+            }
+        }
+        const school = {
+            name: 'school',
+            template:
+            /* student组件注册在school里面,所以就直接把组件标签写school里面 */ `
+            <div>
+                <h2>学校名称{{schoolName}}</h2>
+                <h2>学校地址{{address}}</h2>
+                <student></student>
+            </div>
+            `,
+            data() {
+                return {
+                    schoolName: '东大',
+                    address: '东京'
+                }
+            }//注册组件(局部)
+            , components: {
+                student,
+
+            }
+        }
+        const app = {
+            template: `
+            <div>
+                <hello></hello>
+                <school></school>
+            </div>`,
+            components: {
+                school,
+                hello
+            }
+        }
+        //创建vm
+        new Vue({
+            el: '#root',
+            template:`<app></app>`,
+            //注册组件(局部)
+            components: {
+                app
+            }
+        })
+    </script>
+</body>
+
+</html>

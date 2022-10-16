@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h3>{{hello}}</h3>
+        <!-- <my-school></my-school> -->
+        <!-- <MyShool></MyShool> -->
+        <school></school>
+
+        <hr>
+        <!-- 单标签,自闭和(脚手架环境使用),这里多个单标签只会显示一个 -->
+        <school/>
+        <school/>
+    </div>
+    <script>
+        /* const s = Vue.extend({
+            name:'Vue',//可以使用name配置指定组件在开发者工具中呈现的名字
+            template:`
+            <div>
+                <h2>学校名称{{schoolName}}</h2>
+                <h2>学校地址{{address}}</h2>
+            </div>
+            `,
+            data(){
+                return{
+                    schoolName:'东大',
+                    address:'东京'
+                }
+            }
+        }) */
+
+        //简写,直接定义一个对象
+        const s = {
+            name:'Vue',//可以使用name配置指定组件在开发者工具中呈现的名字
+            template:`
+            <div>
+                <h2>学校名称{{schoolName}}</h2>
+                <h2>学校地址{{address}}</h2>
+            </div>
+            `,
+            data(){
+                return{
+                    schoolName:'东大',
+                    address:'东京'
+                }
+            }
+        }
+        new Vue({
+            el:'#root',
+            data:{
+                hello:'欢迎'
+            },
+            components:{
+                //组件名尽量避免h1,h2这种html标签的
+                //一个单词 可以首字母大写配合Vue开发者工具,大小写都没关系
+                school:s
+                //第一种写法:多个单词''然后-连接,都要小写
+                /* 'my-school':s */
+                //第二种写法:多个单词首,字母大写(脚手架才能这么写)
+                /* MyShool:s */
+            }
+        })
+    </script>
+</body>
+</html>

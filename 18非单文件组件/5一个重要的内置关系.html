@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <school></school>
+    </div>
+    <script>
+
+        /* //定义一个构造函数
+        function Demo() {
+            this.a = 1
+            this.b = 2
+        }
+        //创建一个demo的实例对象
+        const d = new Demo()
+
+        console.log(Demo.prototype);//prototype显示原型属性
+
+        console.log(d.__proto__);//__proto__隐式原型属性
+
+        //无论是函数的prototype还是实例上的__proto__他们都指向一个原型对象
+
+        //我们通过函数身上的显示原型属性操作原型对象,追加一个x属性,值为99
+        Demo.prototype.x = 99
+        //这里就会发现我们之前在显示原型属性的原型对象上加的属性可以通过隐式原型属性找到
+        console.log(d.__proto__.x);
+        console.log(d.x);//和上面一样
+        //所以可以判断这俩的原型对象相同
+        console.log(Demo.prototype===d.__proto__);
+
+        console.log(d);//输出demo的实例对象 */
+        //定义一个school组件
+        Vue.prototype.x = 99
+        const school = Vue.extend({
+            name: 'school',
+            template: `
+            <div>
+                <h2>学校名称{{schoolName}}</h2>
+                <h2>学校地址{{address}}</h2>
+                <button @click="showX">点我输出x</button>
+            </div>
+            `,
+            data() {
+                return {
+                    schoolName: '东大',
+                    address: '东京'
+                }
+            },
+            methods: {
+                showX() {
+                    console.log(this.x);
+                }
+            },
+
+        })
+
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                msg: '你好'
+            },
+            components: {
+                school
+            }
+        })
+        //VueComponent.prototype.__proto__ === Vue.prototype
+        console.log(school.prototype.__proto__ === Vue.prototype);
+        /* Vue构造函数,身上有个prototype显示原型属性,他的值是一个对象,叫Vue的原型对象 */
+
+        /* prototype只有函数才能有,实例对象vm不配有prototype */
+
+
+        /* 紧接着我们创建一个Vue的实例对象vm,他身上一定有个__proto__隐式原型属性,他的值是一个对象,叫Vue的原型对象 */
+
+        /* 巧了,对象都有__proto__,所以Vue的原型对象也有一个__proto__,他的值指向Object原型对象,他的值是null,就到尽头了 */
+
+        /* 然后呢我们调用一个VueComponent构造函数,巧了捏,你也是构造函数,那么你也有prototype显示原型属性,值就是指向自己的VueComponent原型对象,哈哈那么你是对象,就有__proto__隐式原型属性 */
+
+        /* 我们用VueComponent肯定是要编写组件标签,比如<school/>,所以就产生了vc(VueComponent实例的对象),你vc也是对象,那么就有__proto__,值就指向VueComponent的原型对象,就有__proto__隐式原型属性 */
+
+
+        /* 此时Vue就做了一件事情,他把VueComponent的原型对象里的__proto__隐式原型属性指向了Vue的原型对象,那么顺理成章的,Vue的原型对象也有一个__proto__,他的值指向Object原型对象,他的值是null,就到尽头了 */
+
+        /* VueComponent.prototype.__proto__ === Vue.prototype就解释完了 */
+    </script>
+</body>
+
+</html>
